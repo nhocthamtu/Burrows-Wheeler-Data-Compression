@@ -25,7 +25,7 @@ public class CircularSuffixArray
 		index = new int[sorted.length];
 		// process for index look up.
 		for (int i = 0; i < sorted.length; i++)
-			index[sorted[i].offset()] = i;
+			index[i] = sorted[i].offset();
 	}
 
 	private static void sort(CircularSuffix[] a)
@@ -73,11 +73,11 @@ public class CircularSuffixArray
 		return index[i];
 	}
 	
-	public void print()
-	{
-		for(CircularSuffix cs : sorted)
-		{
-			System.out.println(cs.toString());
-		}
-	}
+//	public void print()
+//	{
+//		for(CircularSuffix cs : sorted)
+//		{
+//			System.out.println(cs.toString());
+//		}
+//	}
 }
