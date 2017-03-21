@@ -29,26 +29,28 @@ public class CircularSuffixArray
 
 	private static void sort(CircularSuffix[] a)
 	{
-		final int L = a[0].length();
+		final int w = a[0].length();
 		final int n = a.length;
 		CircularSuffix[] aux = new CircularSuffix[a.length];
-		int[] count = new int[R + 1];
-		for (int i = 0; i < L; i++)
+		// int[] count = new int[R + 1];
+		for (int d = w - 1; d >= 0; d--)
 		{
-			for (int j = 0; j < a.length; j++)
-				count[a[j].digit(i) + 1]++;
-			
+			// compute frequency counts
+			int[] count = new int[R + 1];
+			for (int i = 0; i < n; i++)
+				count[a[i].digit(d) + 1]++;
+
 			// compute cumulates
-            for (int r = 0; r < R; r++)
-                count[r+1] += count[r];
+			for (int r = 0; r < R; r++)
+				count[r + 1] += count[r];
 
-            // move data
-            for (int i = 0; i < n; i++)
-                aux[count[a[i].digit(d)]++] = a[i];
+			// move data
+			for (int i = 0; i < n; i++)
+				aux[count[a[i].digit(d)]++] = a[i];
 
-            // copy back
-            for (int i = 0; i < n; i++)
-                a[i] = aux[i];
+			// copy back
+			for (int i = 0; i < n; i++)
+				a[i] = aux[i];
 		}
 	}
 
