@@ -55,9 +55,12 @@ public class CircularSuffixArray
 			aux = tmp;
 		}
 		
-		for (int i = 0; i < n; i++)
-			aux[i] = a[i];
+		//After even number of iterations, a contains the sorted version
+		//Therefore there is no need to copy back
+		if((w & 1) == 0)
+			return;
 		
+		System.arraycopy(a, 0, aux, 0, a.length);
 	}
 
 	public int length() // length of s
