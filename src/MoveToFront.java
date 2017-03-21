@@ -82,7 +82,6 @@ public class MoveToFront
 			// move that node to the front of the list
 			next[tmp] = head;
 			head = tmp;
-			assert head == cur;
 		}
 	}
 
