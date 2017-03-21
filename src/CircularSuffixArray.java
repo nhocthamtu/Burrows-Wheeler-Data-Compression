@@ -49,9 +49,14 @@ public class CircularSuffixArray
 				aux[count[a[i].digit(d)]++] = a[i];
 
 			// copy back
-			for (int i = 0; i < n; i++)
-				a[i] = aux[i];
+			CircularSuffix[] tmp = a;
+			a = aux;
+			aux = tmp;
 		}
+		
+		for (int i = 0; i < n; i++)
+			a[i] = aux[i];
+		
 	}
 
 	public int length() // length of s
