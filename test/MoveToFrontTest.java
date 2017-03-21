@@ -57,7 +57,7 @@ public class MoveToFrontTest
 		System.setIn(is);
 		System.setOut(new PrintStream(os));
 
-		MoveToFront.encode();
+		MoveToFront.decode();
 		System.setIn(stdin);
 		System.setOut(stdout);
 

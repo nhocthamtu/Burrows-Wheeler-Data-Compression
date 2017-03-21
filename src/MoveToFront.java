@@ -8,10 +8,10 @@ public class MoveToFront
 	public static void encode() throws IOException
 	{
 		// Simulate a link list
-		int[] table = new int[256];
+		int[] next = new int[256];
 		int head = 0;
-		for (int i = 0; i < table.length; i++)
-			table[i] = i + 1;
+		for (int i = 0; i < next.length; i++)
+			next[i] = i + 1;
 
 		int c = 0;
 		while ((c = System.in.read()) != -1)
@@ -23,21 +23,21 @@ public class MoveToFront
 			{
 				int index = 1;
 				int cur = head;
-				while (table[cur] < table.length)
+				while (next[cur] < next.length)
 				{
-					if (table[cur] == c)
+					if (next[cur] == c)
 					{
 						System.out.write(index);
-						int tmp = table[cur];
+						int tmp = next[cur];
 						// unlink table[cur] from link list
-						table[cur] = table[table[cur]];
+						next[cur] = next[next[cur]];
 
 						// move that node to the front of the list
-						table[tmp] = head;
+						next[tmp] = head;
 						head = tmp;
 						break;
 					}
-					cur = table[cur];
+					cur = next[cur];
 					index++;
 				}
 			}
@@ -49,13 +49,13 @@ public class MoveToFront
 	public static void decode() throws IOException
 	{
 		// Simulate a link list, this is the table that stores the next pointers
-		int[] table = new int[256];
+		int[] next = new int[256];
 		// head of the link list
 		int head = 0;
 
 		// initialize the next pointers
-		for (int i = 0; i < table.length; i++)
-			table[i] = i + 1;
+		for (int i = 0; i < next.length; i++)
+			next[i] = i + 1;
 
 		int c = 0;
 		while ((c = System.in.read()) != -1)
@@ -66,7 +66,7 @@ public class MoveToFront
 			while (index != c)
 			{
 				prev = cur;
-				cur = table[cur];
+				cur = next[cur];
 				index++;
 			}
 			System.out.write(cur);
@@ -75,12 +75,12 @@ public class MoveToFront
 			if (prev == -1)
 				continue;
 
-			int tmp = table[prev];
+			int tmp = next[prev];
 			// unlink table[prev] from link list
-			table[prev] = table[tmp];
+			next[prev] = next[tmp];
 
 			// move that node to the front of the list
-			table[tmp] = head;
+			next[tmp] = head;
 			head = tmp;
 			assert head == cur;
 		}
