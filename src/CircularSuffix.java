@@ -18,7 +18,7 @@ public class CircularSuffix
 
 	public char digit(int index)
 	{
-		return data[N - index - j - 1];
+		return data[(index + j) % N];
 	}
 
 	public int offset()

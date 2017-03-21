@@ -10,14 +10,26 @@ public class CircularSuffixArray
 			throw new NullPointerException();
 
 		this.s = s;
-		
+
 		char[] data = s.toCharArray();
 
+		//Fill the Array with all possible circular suffixes.
 		sorted = new CircularSuffix[s.length()];
 		for (int i = 0; i < sorted.length; i++)
-		{
 			sorted[i] = new CircularSuffix(data, i);
-		}
+		
+		//apply LSD sort
+		sort(sorted);
+		
+		//process for index look up.
+		for (int i = 0; i < sorted.length; i++)
+			index[sorted[i].offset()] = i;
+	}
+
+	private static void sort(CircularSuffix[] arr)
+	{
+		CircularSuffix[] aux = new CircularSuffix[arr.length];
+		
 	}
 
 	public int length() // length of s

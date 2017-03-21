@@ -11,8 +11,7 @@ public class CircularSuffixTest
 		CircularSuffix cs = new CircularSuffix(data, 0);
 		for(int i = 0; i < data.length; i ++)
 		{
-			assertEquals(data[data.length - i - 1], cs.digit(i));
+			assertEquals(data[i], cs.digit(i));
 		}
 	}
-
 }
