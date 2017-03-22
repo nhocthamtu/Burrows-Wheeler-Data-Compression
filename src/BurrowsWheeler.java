@@ -30,7 +30,7 @@ public class BurrowsWheeler
 		
 		//Write the end of each element in sorted suffix
 		for (int i = 0; i < len; i++)
-			System.out.write(buf[csa.index(i)]);
+			System.out.write(buf[(len - 1 + csa.index(i)) % len]);
 	}
 
 	// apply Burrows-Wheeler inverse transform, reading from standard input and
