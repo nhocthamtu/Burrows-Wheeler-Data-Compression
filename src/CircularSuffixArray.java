@@ -37,11 +37,10 @@ public class CircularSuffixArray
 		return sorted[i].offset();
 	}
 
-	// public void print()
-	// {
-	// for(CircularSuffix cs : sorted)
-	// {
-	// System.out.println(cs.toString());
-	// }
-	// }
+	public void print()
+	{
+		for (CircularSuffix cs : sorted)
+			System.out.println(cs.toString());
+		
+	}
 }
