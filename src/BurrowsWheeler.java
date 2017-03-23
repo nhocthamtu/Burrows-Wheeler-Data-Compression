@@ -2,7 +2,7 @@ import java.io.IOException;
 
 public class BurrowsWheeler
 {
-
+	private final static int R = 256;
 	public static int getFirst(CircularSuffixArray csa)
 	{
 		for (int i = 0; i < csa.length(); i++)
@@ -35,9 +35,48 @@ public class BurrowsWheeler
 
 	// apply Burrows-Wheeler inverse transform, reading from standard input and
 	// writing to standard output
-	public static void inverseTransform()
+	public static void inverseTransform() throws IOException
 	{
+		//The first 4 bytes of input stream should be the 
+		//first index
+		int first = 0;
+		for(int i = 0; i < 4; i ++)
+			first = (first << 8) | (System.in.read());
 		
+		final int N = System.in.available();
+		
+		//Buffer that holds all transformed data
+		byte[] a = new byte[N];
+		System.in.read(a);
+		
+		//the next table
+		int next[] = new int[N];
+		
+		//Apply "LSD Sort", takes O(N) time and O(R) space,
+		byte[] aux = new byte[N];
+		int[] count = new int[R+1];
+		for(byte b : a)
+			count[b+1]++;
+		
+		//calculate cumulative
+		for(int i = 0; i < R; i ++)
+			count[i+1] += count[i];
+		
+		//move data, but do the same operations to index of elements in the unsorted array.
+		//the resulting next stores the next table we want
+		for(int i = 0; i < N; i ++)
+		{
+			byte b = a[i];
+			aux[count[b]] = b;
+			next[count[b]] = i;
+			count[b]++;
+		}
+		
+		for(int i = 0; i < N; i++)
+		{
+			System.out.write(aux[first]);
+			first = next[first];
+		}
 	}
 
 	// if args[0] is '-', apply Burrows-Wheeler transform
