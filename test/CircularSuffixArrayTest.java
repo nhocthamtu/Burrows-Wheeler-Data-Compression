@@ -8,7 +8,7 @@ public class CircularSuffixArrayTest
 	@Test
 	public void test()
 	{
-		CircularSuffixArray csa = new CircularSuffixArray("ABRACADABRA!");
+		CircularSuffixArray csa = new CircularSuffixArray("ABRACADABRA!".getBytes());
 		csa.print();
 		int[] index = { 11, 10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2 };
 		for (int i = 0; i < index.length; i++)

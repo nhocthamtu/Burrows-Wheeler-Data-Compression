@@ -21,7 +21,7 @@ public class BurrowsWheeler
 		int len = System.in.available();
 		byte[] buf = new byte[len];
 		System.in.read(buf);
-		CircularSuffixArray csa = new CircularSuffixArray(new String(buf));
+		CircularSuffixArray csa = new CircularSuffixArray(buf);
 		int first = getFirst(csa);
 
 		// Write first to stdout, using big endian
