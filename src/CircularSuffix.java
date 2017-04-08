@@ -19,7 +19,12 @@ public class CircularSuffix
 		this.j = offset;
 	}
 
-	public byte digit(int index)
+	public int digit(int index)
+	{
+		return byteAt(index) & 0xFF;
+	}
+	
+	private byte byteAt(int index)
 	{
 		return data[(index + j) % N];
 	}
@@ -41,7 +46,7 @@ public class CircularSuffix
 		{
 			byte[] arr = new byte[N];
 			for(int i = 0; i < arr.length; i ++)
-				arr[i] = digit(i);
+				arr[i] = byteAt(i);
 			
 			s = new String(arr);
 		}
