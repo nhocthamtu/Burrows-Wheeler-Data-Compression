@@ -2,35 +2,39 @@
 public class CircularSuffixArraySorter
 {
 	// private static final int BITS_PER_BYTE = 8;
-	// private static final int BITS_PER_INT  =  32;   // each Java int is 32 bits 
-    private static final int R             = 256;   // extended ASCII alphabet size
-    private static final int CUTOFF        =  15;   // cutoff to insertion sort
-    private CircularSuffix[] a;
-    
-    public CircularSuffixArraySorter(CircularSuffix[] a)
-    {
-    	this.a = a;
-    }
-    
+	// private static final int BITS_PER_INT = 32; // each Java int is 32 bits
+	private static final int R = 256; // extended ASCII alphabet size
+	private static final int CUTOFF = 15; // cutoff to insertion sort
+	private int[] a;
+	private byte[] data;
+	private final int N;
+
+	public CircularSuffixArraySorter(int[] a, byte[] data)
+	{
+		this.a = a;
+		this.data = data;
+		this.N = data.length;
+	}
+
 	public void sort()
 	{
 		int n = a.length;
-		CircularSuffix[] aux = new CircularSuffix[n];
+		int[] aux = new int[n];
 		sort(a, 0, n - 1, 0, aux);
 	}
-	
-	public static void lsdSort(CircularSuffix[] a)
+
+	public void lsdSort(int[] a)
 	{
-		final int w = a[0].length();
+		final int w = a.length;
 		final int n = a.length;
-		CircularSuffix[] aux = new CircularSuffix[a.length];
+		int[] aux = new int[n];
 		// int[] count = new int[R + 1];
 		for (int d = w - 1; d >= 0; d--)
 		{
 			// compute frequency counts
 			int[] count = new int[R + 1];
 			for (int i = 0; i < n; i++)
-				count[a[i].digit(d) + 1]++;
+				count[charAt(i, d) + 1]++;
 
 			// compute cumulates
 			for (int r = 0; r < R; r++)
@@ -38,10 +42,10 @@ public class CircularSuffixArraySorter
 
 			// move data
 			for (int i = 0; i < n; i++)
-				aux[count[a[i].digit(d)]++] = a[i];
+				aux[count[charAt(i, d)]++] = a[i];
 
 			// Swap aux and a for next round
-			CircularSuffix[] tmp = a;
+			int[] tmp = a;
 			a = aux;
 			aux = tmp;
 		}
@@ -53,18 +57,18 @@ public class CircularSuffixArraySorter
 
 		System.arraycopy(a, 0, aux, 0, a.length);
 	}
-	
+
 	// return dth character of s, -1 if d = length of string
-	private int charAt(CircularSuffix s, int d)
+	private int charAt(int s, int d)
 	{
-		assert d >= 0 && d <= s.length();
-		if (d == s.length())
+		assert d >= 0 && d <= N;
+		if (d == N)
 			return -1;
-		return s.digit(d);
+		return data[(d + s) % N] & 0xFF;
 	}
 
 	// sort from a[lo] to a[hi], starting at the dth character
-	private void sort(CircularSuffix[] a, int lo, int hi, int d, CircularSuffix[] aux)
+	private void sort(int[] a, int lo, int hi, int d, int[] aux)
 	{
 
 		// cutoff to insertion sort for small subarrays
@@ -103,7 +107,7 @@ public class CircularSuffixArraySorter
 	}
 
 	// insertion sort a[lo..hi], starting at dth character
-	private static void insertion(CircularSuffix[] a, int lo, int hi, int d)
+	private void insertion(int[] a, int lo, int hi, int d)
 	{
 		for (int i = lo; i <= hi; i++)
 			for (int j = i; j > lo && less(a[j], a[j - 1], d); j--)
@@ -111,24 +115,24 @@ public class CircularSuffixArraySorter
 	}
 
 	// exchange a[i] and a[j]
-	private static<T> void exch(T[] a, int i, int j)
+	private static <T> void exch(int[] a, int i, int j)
 	{
-		T temp = a[i];
+		int temp = a[i];
 		a[i] = a[j];
 		a[j] = temp;
 	}
 
-	// is v less than w, starting at character d
-	private static boolean less(CircularSuffix v, CircularSuffix w, int d)
+	// is v less than w, starting at int d
+	private boolean less(int v, int w, int d)
 	{
 		// assert v.substring(0, d).equals(w.substring(0, d));
-		for (int i = d; i < Math.min(v.length(), w.length()); i++)
+		for (int i = d; i < N; i++)
 		{
-			if (v.digit(i) < w.digit(i))
+			if (charAt(v, i) < charAt(w, i))
 				return true;
-			if (v.digit(i) > w.digit(i))
+			if (charAt(v, i) > charAt(w, i))
 				return false;
 		}
-		return v.length() < w.length();
+		return false;
 	}
 }
