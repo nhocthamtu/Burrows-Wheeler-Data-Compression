@@ -5,7 +5,7 @@ public class MoveToFront
 	// apply move-to-front encoding, reading from standard input and writing to
 	// standard output
 
-	public static void encode() throws IOException
+	public static void encode() throws IOException, IllegalStateException
 	{
 		// Simulate a link list
 		int[] next = new int[256];
@@ -14,7 +14,11 @@ public class MoveToFront
 			next[i] = i + 1;
 
 		int c = 0;
-		while ((c = System.in.read()) != -1)
+
+		final int N = System.in.available();
+		int written = 0;
+
+		outer: while ((c = System.in.read()) != -1)
 		{
 			if (c == head)
 			{
@@ -27,6 +31,7 @@ public class MoveToFront
 				{
 					if (next[cur] == c)
 					{
+						written++;
 						System.out.write(index);
 						int tmp = next[cur];
 						// unlink table[cur] from link list
@@ -35,18 +40,21 @@ public class MoveToFront
 						// move that node to the front of the list
 						next[tmp] = head;
 						head = tmp;
-						break;
+						continue outer;
 					}
 					cur = next[cur];
 					index++;
 				}
+				throw new IllegalStateException("Unable to find the character in Link Lis!");
 			}
 		}
+		if (N != written)
+			throw new IllegalStateException("Sizes of files are unequal! IN: " + N + " OUT: " + written);
 	}
 
 	// apply move-to-front decoding, reading from standard input and writing to
 	// standard output
-	public static void decode() throws IOException
+	public static void decode() throws IOException, IllegalStateException
 	{
 		// Simulate a link list, this is the table that stores the next pointers
 		int[] next = new int[256];
@@ -57,18 +65,21 @@ public class MoveToFront
 		for (int i = 0; i < next.length; i++)
 			next[i] = i + 1;
 
+		final int N = System.in.available();
+		int written = 0;
+
 		int c = 0;
+
 		while ((c = System.in.read()) != -1)
 		{
-			int index = 0;
 			int cur = head;
 			int prev = -1;
-			while (index != c)
+			for (int i = 0; i < c; i++)
 			{
 				prev = cur;
 				cur = next[cur];
-				index++;
 			}
+			written++;
 			System.out.write(cur);
 
 			// Don't do anything if the char is already the head
@@ -83,6 +94,8 @@ public class MoveToFront
 			next[tmp] = head;
 			head = tmp;
 		}
+		if (N != written)
+			throw new IllegalStateException("Sizes of files are unequal! IN: " + N + " OUT: " + written);
 	}
 
 	// if args[0] is '-', apply move-to-front encoding
