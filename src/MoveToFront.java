@@ -18,10 +18,16 @@ public class MoveToFront
 		final int N = System.in.available();
 		int written = 0;
 
+		int read = 0;
 		outer: while ((c = System.in.read()) != -1)
 		{
+			if (read != written)
+				throw new IllegalStateException("Somehow encoding failed!");
+			
+			read++;
 			if (c == head)
 			{
+				written++;
 				System.out.write(0);
 			} else
 			{
