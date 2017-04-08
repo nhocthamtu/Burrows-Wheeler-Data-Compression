@@ -89,5 +89,6 @@ public class BurrowsWheeler
 			transform();
 		else if (args[0].equals("+"))
 			inverseTransform();
+		System.out.close();
 	}
 }
