@@ -14,8 +14,7 @@ public class MoveToFront
 			next[i] = i + 1;
 
 		int c = 0;
-
-		final int N = System.in.available();
+		
 		int written = 0;
 
 		int read = 0;
@@ -54,8 +53,9 @@ public class MoveToFront
 				throw new IllegalStateException("Unable to find the character in Link Lis!");
 			}
 		}
-		if (N != written)
-			throw new IllegalStateException("Sizes of files are unequal! IN: " + N + " OUT: " + written);
+		if (read != written)
+			throw new IllegalStateException("Sizes of files are unequal! IN: " + read + " OUT: " + written);
+		System.err.println("READ: " + read);
 	}
 
 	// apply move-to-front decoding, reading from standard input and writing to
@@ -71,13 +71,14 @@ public class MoveToFront
 		for (int i = 0; i < next.length; i++)
 			next[i] = i + 1;
 
-		final int N = System.in.available();
 		int written = 0;
 
 		int c = 0;
-
+		
+		int read = 0;
 		while ((c = System.in.read()) != -1)
 		{
+			read++;
 			int cur = head;
 			int prev = -1;
 			for (int i = 0; i < c; i++)
@@ -100,17 +101,25 @@ public class MoveToFront
 			next[tmp] = head;
 			head = tmp;
 		}
-		if (N != written)
-			throw new IllegalStateException("Sizes of files are unequal! IN: " + N + " OUT: " + written);
+		if (read != written)
+			throw new IllegalStateException("Sizes of files are unequal! IN: " + read + " OUT: " + written);
+		System.err.println("READ: " + read);
 	}
 
 	// if args[0] is '-', apply move-to-front encoding
 	// if args[0] is '+', apply move-to-front decoding
 	public static void main(String[] args) throws IOException
 	{
+		if(args.length != 1)
+		{
+			System.out.println("usage: MoveToFront -/+ [InFile] [OutFile]d");
+			return;
+		}
+		
 		if (args[0].equals("-"))
 			encode();
 		else if (args[0].equals("+"))
 			decode();
+		System.out.close();
 	}
 }
