@@ -3,6 +3,7 @@ import java.io.IOException;
 public class BurrowsWheeler
 {
 	private final static int R = 256;
+
 	public static int getFirst(CircularSuffixArray csa)
 	{
 		for (int i = 0; i < csa.length(); i++)
@@ -13,7 +14,7 @@ public class BurrowsWheeler
 
 		return -1;
 	}
-	
+
 	// apply Burrows-Wheeler transform, reading from standard input and writing
 	// to standard output
 	public static void transform() throws IOException
@@ -27,8 +28,8 @@ public class BurrowsWheeler
 		// Write first to stdout, using big endian
 		for (int i = 24; i >= 0; i -= 8)
 			System.out.write((first >> i) & 0xFF);
-		
-		//Write the end of each element in sorted suffix
+
+		// Write the end of each element in sorted suffix
 		for (int i = 0; i < len; i++)
 			System.out.write(buf[(len - 1 + csa.index(i)) % len]);
 	}
@@ -37,44 +38,45 @@ public class BurrowsWheeler
 	// writing to standard output
 	public static void inverseTransform() throws IOException
 	{
-		//The first 4 bytes of input stream should be the 
-		//first index
+		// The first 4 bytes of input stream should be the
+		// first index
 		int first = 0;
-		for(int i = 0; i < 4; i ++)
+		for (int i = 0; i < 4; i++)
 			first = (first << 8) | (System.in.read());
-		
+
 		final int N = System.in.available();
-		
-		//Buffer that holds all transformed data
+
+		// Buffer that holds all transformed data
 		byte[] a = new byte[N];
 		System.in.read(a);
-		
-		//the next table
+
+		// the next table
 		int next[] = new int[N];
-		
-		//Apply "LSD Sort", takes O(N) time and O(R) space,
+
+		// Apply "LSD Sort", takes O(N) time and O(R) space,
 		byte[] aux = new byte[N];
-		int[] count = new int[R+1];
-		for(byte b : a)
-			count[b+1]++;
-		
-		//calculate cumulative
-		for(int i = 0; i < R; i ++)
-			count[i+1] += count[i];
-		
-		//move data, but do the same operations to index of elements in the unsorted array.
-		//the resulting next stores the next table we want
-		for(int i = 0; i < N; i ++)
+		int[] count = new int[R + 1];
+		for (byte b : a)
+			count[(b & 0xFF) + 1]++;
+
+		// calculate cumulative
+		for (int i = 0; i < R; i++)
+			count[i + 1] += count[i];
+
+		// move data, but do the same operations to index of elements in the
+		// unsorted array.
+		// the resulting next stores the next table we want
+		for (int i = 0; i < N; i++)
 		{
 			byte b = a[i];
-			aux[count[b]] = b;
-			next[count[b]] = i;
-			count[b]++;
+			aux[count[b & 0xFF]] = b;
+			next[count[b & 0xFF]] = i;
+			count[b & 0xFF]++;
 		}
-		
-		for(int i = 0; i < N; i++)
+
+		for (int i = 0; i < N; i++)
 		{
-			System.out.write(aux[first]);
+			System.out.write(aux[first] & 0xFF);
 			first = next[first];
 		}
 	}
