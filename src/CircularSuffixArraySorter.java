@@ -5,7 +5,11 @@ public class CircularSuffixArraySorter
 	// private static final int BITS_PER_INT = 32; // each Java int is 32 bits
 	private static final int R = 256; // extended ASCII alphabet size
 	private static final int CUTOFF = 15; // cutoff to insertion sort
+	
+	//Index of the suffix, hence shift offset to the left
 	private int[] a;
+	
+	//The actual data to encode
 	private byte[] data;
 	private final int N;
 
