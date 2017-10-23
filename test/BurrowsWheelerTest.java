@@ -26,7 +26,7 @@ public class BurrowsWheelerTest
 		System.setIn(is);
 		System.setOut(new PrintStream(os));
 
-		BurrowsWheeler.transform();
+		BurrowsWheeler.encode();
 		System.setIn(stdin);
 		System.setOut(stdout);
 
@@ -51,7 +51,7 @@ public class BurrowsWheelerTest
 		System.setIn(is);
 		System.setOut(new PrintStream(os));
 
-		BurrowsWheeler.inverseTransform();
+		BurrowsWheeler.decode();
 		
 		System.setIn(stdin);
 		System.setOut(stdout);

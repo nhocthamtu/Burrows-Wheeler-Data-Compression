@@ -4,7 +4,7 @@ public class BurrowsWheeler
 {
 	private final static int R = 256;
 
-	public static int getFirst(CircularSuffixArray csa)
+	private static int getFirst(CircularSuffixArray csa)
 	{
 		for (int i = 0; i < csa.length(); i++)
 		{
@@ -17,7 +17,7 @@ public class BurrowsWheeler
 
 	// apply Burrows-Wheeler transform, reading from standard input and writing
 	// to standard output
-	public static void transform() throws IOException
+	public static void encode() throws IOException
 	{
 		int len = System.in.available();
 		byte[] buf = new byte[len];
@@ -36,7 +36,7 @@ public class BurrowsWheeler
 
 	// apply Burrows-Wheeler inverse transform, reading from standard input and
 	// writing to standard output
-	public static void inverseTransform() throws IOException
+	public static void decode() throws IOException
 	{
 		// The first 4 bytes of input stream should be the
 		// first index
@@ -86,9 +86,9 @@ public class BurrowsWheeler
 	public static void main(String[] args) throws IOException
 	{
 		if (args[0].equals("-"))
-			transform();
+			encode();
 		else if (args[0].equals("+"))
-			inverseTransform();
+			decode();
 		System.out.close();
 	}
 }
