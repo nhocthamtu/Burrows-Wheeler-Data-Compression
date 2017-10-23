@@ -8,10 +8,11 @@ public class CircularSuffix
 
 	// Number of characters the string shifted to the left
 	private final int j;
-	
-	//String representation of this suffix/
-	
+
+	// String representation of this suffix/
+
 	private String s;
+
 	public CircularSuffix(byte[] data, int offset)
 	{
 		this.N = data.length;
@@ -23,7 +24,7 @@ public class CircularSuffix
 	{
 		return byteAt(index) & 0xFF;
 	}
-	
+
 	private byte byteAt(int index)
 	{
 		return data[(index + j) % N];
@@ -42,12 +43,12 @@ public class CircularSuffix
 	@Override
 	public String toString()
 	{
-		if(s == null)
+		if (s == null)
 		{
 			byte[] arr = new byte[N];
-			for(int i = 0; i < arr.length; i ++)
+			for (int i = 0; i < arr.length; i++)
 				arr[i] = byteAt(i);
-			
+
 			s = new String(arr);
 		}
 		return s;

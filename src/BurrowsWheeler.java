@@ -1,4 +1,4 @@
-import java.io.IOException;
+import edu.princeton.cs.algs4.StdIn;
 
 public class BurrowsWheeler
 {
@@ -17,18 +17,18 @@ public class BurrowsWheeler
 
 	// apply Burrows-Wheeler transform, reading from standard input and writing
 	// to standard output
-	public static void encode() throws IOException
+	public static void encode()
 	{
-		int len = System.in.available();
-		byte[] buf = new byte[len];
-		System.in.read(buf);
-		CircularSuffixArray csa = new CircularSuffixArray(buf);
+		String data = StdIn.readAll();
+		CircularSuffixArray csa = new CircularSuffixArray(data);
 		int first = getFirst(csa);
 
 		// Write first to stdout, using big endian
 		for (int i = 24; i >= 0; i -= 8)
 			System.out.write((first >> i) & 0xFF);
 
+		final byte[] buf = data.getBytes();
+		final int len = buf.length;
 		// Write the end of each element in sorted suffix
 		for (int i = 0; i < len; i++)
 			System.out.write(buf[(len - 1 + csa.index(i)) % len]);
@@ -36,19 +36,17 @@ public class BurrowsWheeler
 
 	// apply Burrows-Wheeler inverse transform, reading from standard input and
 	// writing to standard output
-	public static void decode() throws IOException
+	public static void decode()
 	{
 		// The first 4 bytes of input stream should be the
 		// first index
 		int first = 0;
 		for (int i = 0; i < 4; i++)
-			first = (first << 8) | (System.in.read());
-
-		final int N = System.in.available();
+			first = (first << 8) | (StdIn.readByte());
 
 		// Buffer that holds all transformed data
-		byte[] a = new byte[N];
-		System.in.read(a);
+		byte[] a = StdIn.readAll().getBytes();
+		final int N = a.length;
 
 		// the next table
 		int next[] = new int[N];
@@ -83,7 +81,7 @@ public class BurrowsWheeler
 
 	// if args[0] is '-', apply Burrows-Wheeler transform
 	// if args[0] is '+', apply Burrows-Wheeler inverse transform
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args)
 	{
 		if (args[0].equals("-"))
 			encode();

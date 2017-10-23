@@ -1,11 +1,13 @@
 import java.io.IOException;
 
+import edu.princeton.cs.algs4.StdIn;
+
 public class MoveToFront
 {
 	// apply move-to-front encoding, reading from standard input and writing to
 	// standard output
 
-	public static void encode() throws IOException, IllegalStateException
+	public static void encode() throws IllegalStateException
 	{
 		// Simulate a link list
 		int[] next = new int[256];
@@ -14,15 +16,16 @@ public class MoveToFront
 			next[i] = i + 1;
 
 		int c = 0;
-		
+
 		int written = 0;
 
 		int read = 0;
-		outer: while ((c = System.in.read()) != -1)
+		c = StdIn.readByte();
+		while (c != -1)
 		{
 			if (read != written)
 				throw new IllegalStateException("Somehow encoding failed!");
-			
+
 			read++;
 			if (c == head)
 			{
@@ -45,13 +48,15 @@ public class MoveToFront
 						// move that node to the front of the list
 						next[tmp] = head;
 						head = tmp;
-						continue outer;
+						break;
 					}
 					cur = next[cur];
 					index++;
 				}
-				throw new IllegalStateException("Unable to find the character in Link Lis!");
+				if (next[cur] >= next.length)
+					throw new IllegalStateException("Unable to find the character in Link Lis!");
 			}
+			c = StdIn.readByte();
 		}
 		if (read != written)
 			throw new IllegalStateException("Sizes of files are unequal! IN: " + read + " OUT: " + written);
@@ -60,7 +65,7 @@ public class MoveToFront
 
 	// apply move-to-front decoding, reading from standard input and writing to
 	// standard output
-	public static void decode() throws IOException, IllegalStateException
+	public static void decode() throws IllegalStateException
 	{
 		// Simulate a link list, this is the table that stores the next pointers
 		int[] next = new int[256];
@@ -74,9 +79,10 @@ public class MoveToFront
 		int written = 0;
 
 		int c = 0;
-		
+
 		int read = 0;
-		while ((c = System.in.read()) != -1)
+		c = StdIn.readByte();
+		while (c != -1)
 		{
 			read++;
 			int cur = head;
@@ -100,6 +106,7 @@ public class MoveToFront
 			// move that node to the front of the list
 			next[tmp] = head;
 			head = tmp;
+			c = StdIn.readByte();
 		}
 		if (read != written)
 			throw new IllegalStateException("Sizes of files are unequal! IN: " + read + " OUT: " + written);
@@ -110,12 +117,12 @@ public class MoveToFront
 	// if args[0] is '+', apply move-to-front decoding
 	public static void main(String[] args) throws IOException
 	{
-		if(args.length != 1)
+		if (args.length != 1)
 		{
 			System.out.println("usage: MoveToFront -/+ [InFile] [OutFile]d");
 			return;
 		}
-		
+
 		if (args[0].equals("-"))
 			encode();
 		else if (args[0].equals("+"))
